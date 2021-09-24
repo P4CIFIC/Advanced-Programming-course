@@ -1,5 +1,5 @@
 numOfTests = int(input())
-print("\n\n")
+print("\n")
 wL = ""
 dL = ""
 wR = ""
@@ -52,6 +52,4 @@ def addRight():
         n += 1
 
 def addLeft():
-
-
-        
+    
