@@ -1,77 +1,45 @@
+tempStr = ""
 numOfTests = int(input())
 print("\n")
 
-areEqual = False
-offsetRightSides = 0
-tempStr = ""
-leftSides = []
-rightSides = []
-flipFlop = True
-"""
-def checkIfEqual (counterLeft, counterRight, string):
-    oneInput = list(string)
-    leftSideWeight = int(oneInput[0])
-    leftSideLength = int(oneInput[1])
-    rightSideWeight = int(oneInput[2])
-    rightSideLength = int(oneInput[3])
+
+def checkIfEqual (string):
+
+    arr = string.split(" ")
+    leftSideWeight = int(arr[0])
+    leftSideLength = int(arr[1])
+    rightSideWeight = int(arr[2])
+    rightSideLength = int(arr[3])
     
-    if counterLeft != 0:
+    leftForce = leftSideWeight * leftSideLength 
+    rightForce = rightSideWeight * rightSideLength
     
-        if leftSideWeight != 0:
-            leftSides.append(leftSideWeight)
-            counterLeft -= 1
-        else:
-            counterLeft += 1
-        
-        if rightSideWeight != 0:
-            leftSides.append(rightSideWeight)
-            counterLeft -= 1
-        else:
-            counterLeft -= 1
-
-
-    if counterRight != 0:
+    if leftSideWeight == 0:
+        leftSideWeight = checkIfEqual(input())
     
-        if leftSideWeight != 0:
-            rightSides.append(leftSideWeight)
-            counterRight -= 1
-        else:
-            counterRight += 1
-        
-        if rightSideWeight != 0:
-            rightSides.append(rightSideWeight)
-            counterRight -= 1
-        else:
-            counterRight -= 1
-
-    for leftMass in leftSides:
-        leftSideWeight = 0
-        leftSideWeight += leftMass
-    for rightMass in rightSides:
-        rightSideWeight = 0
-        rightSideWeight += leftMass
-
-    if (leftSideWeight*leftSideLength) == (rightSideWeight*rightSideLength):
-        return "YES"
+    if rightSideWeight == 0:
+        rightSideWeight = checkIfEqual(input())
+    
+    if (leftForce == rightForce) and (leftSideWeight != 0) and (rightSideWeight != 0):
+        return leftSideWeight + rightSideWeight
+    
     else:
-        return "NO"
-"""
+        return 0
 
 
 while numOfTests != 0:
+
     answer = False
     while(answer is False):
         userInput = input()
-        tempStr = ""
-        for line in userInput:
-            if line.isdigit():
-                tempStr += line            
-        
-        answer = checkIfEqual( 1, 1, tempStr)
-        tempStr = ""
-        leftSides = []
-        rightSides = []
-    print(answer + "\n")
+        if userInput == "":
+            continue
+        else:
+            tempStr = ""
+            answer = checkIfEqual(userInput)
+            tempStr = ""
+
+    print(str(answer) + "\n")
     answer = False
     numOfTests -= 1
 
