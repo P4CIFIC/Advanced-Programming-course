@@ -1,40 +1,50 @@
 def checkIfEqual (string):
-    if string == "":
-        string = checkIfEqual(input())
+    arr = string.split(" ")
+
+    leftSideWeight = int(arr[0])
+    leftSideLength = int(arr[1])
+    rightSideWeight = int(arr[2])
+    rightSideLength = int(arr[3])
+    
+    if leftSideWeight == 0:
+        leftSideWeight = checkIfEqual(input())
+    
+    if rightSideWeight == 0:
+        rightSideWeight = checkIfEqual(input())
+    
+    leftForce = leftSideWeight * leftSideLength 
+    rightForce = rightSideWeight * rightSideLength
+    
+    if (leftForce == rightForce) and (leftSideWeight != 0) and (rightSideWeight != 0):
+        return leftSideWeight + rightSideWeight
+    
     else:
-        arr = string.split(" ")
-        leftSideWeight = int(arr[0])
-        leftSideLength = int(arr[1])
-        rightSideWeight = int(arr[2])
-        rightSideLength = int(arr[3])
-        
-        leftForce = leftSideWeight * leftSideLength 
-        rightForce = rightSideWeight * rightSideLength
-        
-        if leftSideWeight == 0:
-            leftSideWeight = checkIfEqual(input())
-        
-        if rightSideWeight == 0:
-            rightSideWeight = checkIfEqual(input())
-        
-        if (leftForce == rightForce) and (leftSideWeight != 0) and (rightSideWeight != 0):
-            return leftSideWeight + rightSideWeight
-        
-        else:
-            return 0
+        return 0
 
 numOfTests = int(input())
-#print("\n")
+input()
+remaining = 0
+output = ""
 
-while numOfTests != 0:
-    answer = ""
+while remaining < numOfTests:
     
-    while(answer is False):
-        answer = checkIfEqual(input())
+    answer = checkIfEqual(input())
+
+    if remaining != (numOfTests - 1):
 
         if answer == 0:
-            
+            output += "NO\n\n"
+            input()
+        else:
+            output += "YES\n\n"
+            input()
+    else:
 
-    print(str(answer) + "\n")
-    answer = False
-    numOfTests -= 1
+        if answer == 0:
+            output += "NO"
+        else:
+            output += "YES"
+        
+    remaining += 1
+
+print(output)
