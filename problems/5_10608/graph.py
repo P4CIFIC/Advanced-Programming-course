@@ -1,4 +1,4 @@
-class Graph():
+class Graph:
 
     # Constructs the class with an arbitrary amount of vertices
     def __init__(self, vertices_no) -> None:
@@ -36,29 +36,22 @@ class Graph():
         for vertex in self.graph:
             for edges in self.graph[vertex]:
                 print(vertex, " -> ", edges[0], " edge weight: ", edges[1])
-    
 
-def get_numbers_from_line(line):
-    temp = line.split(" ")
-    if len(temp) == 1:
-        output = int(temp[0])
-    else:
-        output = [int(element) for element in temp]
-    return output
+g = Graph(0)
 
-def solve_for_most_friends(number_of_test_cases):
-    while number_of_test_cases > 0:
-        intial_data = get_numbers_from_line(input())
-        number_of_people = intial_data[0]
-        number_of_pairs = intial_data[1]
-        g = Graph(0)
-        counter = 1
-        while counter != number_of_people + 1:
-            g.add_vertex(counter)
-            counter += 1
-
-        #decrements numbers of test cases
-        number_of_test_cases =- 1
-            
-number_of_test_cases = get_numbers_from_line(input())
-solve_for_most_friends(number_of_test_cases)
+# stores the number of vertices in the graph
+g.add_vertex(1)
+g.add_vertex(2)
+g.add_vertex(3)
+g.add_vertex(4)
+# Add the edges between the vertices by specifying
+# the from and to vertex along with the edge weights.
+g.add_edge(1, 2, 1)
+g.add_edge(1, 3, 1)
+g.add_edge(2, 3, 1)
+g.add_edge(3, 4, 1)
+g.add_edge(4, 1, 1)
+g.print_graph()
+# Reminder: the second element of each list inside the dictionary
+# denotes the edge weight.
+print ("Internal representation: ", g.graph)
