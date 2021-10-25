@@ -29,7 +29,9 @@ class Graph():
             # an undirected graph, an edge between v1 v2 does not
             # imply that an edge exists between v2 and v1
             temp = [v2, e]
-            self.graph[v1].append(temp)
+            if temp not in self.graph[v1]:
+                self.graph[v1].append(temp)
+
 
     # Print the graph
     def print_graph(self):
@@ -52,13 +54,28 @@ def solve_for_most_friends(number_of_test_cases):
         number_of_people = intial_data[0]
         number_of_pairs = intial_data[1]
         g = Graph(0)
+
         counter = 1
         while counter != number_of_people + 1:
             g.add_vertex(counter)
             counter += 1
+        
+        counter = 0
+        while counter != number_of_pairs:
+            line = get_numbers_from_line(input())
+            if line[0] > line[1]:
+                person_one = line[1]
+                person_two = line[0]
+            else:
+                person_one = line[0]
+                person_two = line[1]
 
+            g.add_edge(person_one, person_two, 1)
+            counter += 1
+
+        g.print_graph()
         #decrements numbers of test cases
-        number_of_test_cases =- 1
+        number_of_test_cases -= 1
             
 number_of_test_cases = get_numbers_from_line(input())
 solve_for_most_friends(number_of_test_cases)
