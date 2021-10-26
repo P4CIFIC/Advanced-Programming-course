@@ -25,13 +25,11 @@ class Graph():
         elif v2 not in self.graph:
             print("Vertex ", v2, " does not exist.")
         else:
-            # Since this code is not restricted to a directed or 
-            # an undirected graph, an edge between v1 v2 does not
+            # an edge between v1 v2 does
             # imply that an edge exists between v2 and v1
             temp = [v2, e]
             if temp not in self.graph[v1]:
                 self.graph[v1].append(temp)
-
 
     # Print the graph
     def print_graph(self):
@@ -48,13 +46,24 @@ def get_numbers_from_line(line):
         output = [int(element) for element in temp]
     return output
 
+def dfs(visited, graph, node):
+    if node not in visited:
+        visited.add(node)
+        for neighbour in graph[node]:
+            dfs(visited, graph, neighbour[0])
+
 def solve_for_most_friends(number_of_test_cases):
+
     while number_of_test_cases > 0:
         intial_data = get_numbers_from_line(input())
         number_of_people = intial_data[0]
         number_of_pairs = intial_data[1]
-        g = Graph(0)
 
+        visited = set()
+        #components = []
+        #count = 0
+
+        g = Graph(0)
         counter = 1
         while counter != number_of_people + 1:
             g.add_vertex(counter)
@@ -74,8 +83,12 @@ def solve_for_most_friends(number_of_test_cases):
             counter += 1
 
         g.print_graph()
+        
+        dfs(visited, g.graph, 1)
+        
         #decrements numbers of test cases
         number_of_test_cases -= 1
+
             
 number_of_test_cases = get_numbers_from_line(input())
 solve_for_most_friends(number_of_test_cases)
