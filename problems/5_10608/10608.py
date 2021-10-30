@@ -52,6 +52,14 @@ def dfs(visited, graph, node):
         for neighbour in graph[node]:
             dfs(visited, graph, neighbour[0])
 
+##change this bullshit algorithm to something viable
+def find_components(visited, visited_bool, graph, start_node, counter, num_people):
+    for i in range(num_people):
+        if visited_bool[i] is False:
+            counter += 1
+            dfs(i+1)
+    return (counter, components)
+
 def solve_for_most_friends(number_of_test_cases):
 
     while number_of_test_cases > 0:
@@ -60,17 +68,22 @@ def solve_for_most_friends(number_of_test_cases):
         number_of_pairs = intial_data[1]
 
         visited = set()
+        visited_bool = [False] * number_of_people
         #components = []
-        #count = 0
 
         g = Graph(0)
-        counter = 1
-        while counter != number_of_people + 1:
-            g.add_vertex(counter)
-            counter += 1
+
+        """ 
+        The following while loops will structure the input data into nodes
+        and apply the edges with edgeweight 1 for every node.
+        """
+        counter_num_people = 1
+        while counter_num_people != number_of_people + 1:
+            g.add_vertex(counter_num_people)
+            counter_num_people += 1
         
-        counter = 0
-        while counter != number_of_pairs:
+        counter_num_pairs = 0
+        while counter_num_pairs != number_of_pairs:
             line = get_numbers_from_line(input())
             if line[0] > line[1]:
                 person_one = line[1]
@@ -80,7 +93,7 @@ def solve_for_most_friends(number_of_test_cases):
                 person_two = line[1]
 
             g.add_edge(person_one, person_two, 1)
-            counter += 1
+            counter_num_pairs += 1
 
         g.print_graph()
         
@@ -89,6 +102,5 @@ def solve_for_most_friends(number_of_test_cases):
         #decrements numbers of test cases
         number_of_test_cases -= 1
 
-            
 number_of_test_cases = get_numbers_from_line(input())
 solve_for_most_friends(number_of_test_cases)
