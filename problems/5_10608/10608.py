@@ -58,7 +58,7 @@ def find_components(visited, visited_bool, graph, start_node, counter, num_peopl
         if visited_bool[i] is False:
             counter += 1
             dfs(i+1)
-    return (counter, components)
+    return counter, components
 
 def solve_for_most_friends(number_of_test_cases):
 
@@ -91,13 +91,13 @@ def solve_for_most_friends(number_of_test_cases):
             else:
                 person_one = line[0]
                 person_two = line[1]
-
             g.add_edge(person_one, person_two, 1)
             counter_num_pairs += 1
 
         g.print_graph()
         
         dfs(visited, g.graph, 1)
+        
         
         #decrements numbers of test cases
         number_of_test_cases -= 1
