@@ -36,7 +36,6 @@ class Graph():
         for vertex in self.graph:
             for edges in self.graph[vertex]:
                 print(vertex, " -> ", edges[0], " edge weight: ", edges[1])
-    
 
 def get_numbers_from_line(line):
     temp = line.split(" ")
@@ -51,7 +50,7 @@ def dfs(visited, graph, node):
         visited.add(node)
         for neighbour in graph[node]:
             dfs(visited, graph, neighbour[0])
-
+    
 def solve_for_most_friends(number_of_test_cases):
 
     while number_of_test_cases > 0:
@@ -68,7 +67,7 @@ def solve_for_most_friends(number_of_test_cases):
         while counter != number_of_people + 1:
             g.add_vertex(counter)
             counter += 1
-        
+
         counter = 0
         while counter != number_of_pairs:
             line = get_numbers_from_line(input())
@@ -83,12 +82,12 @@ def solve_for_most_friends(number_of_test_cases):
             counter += 1
 
         g.print_graph()
-        
+
         dfs(visited, g.graph, 1)
-        
+
         #decrements numbers of test cases
         number_of_test_cases -= 1
 
-            
+
 number_of_test_cases = get_numbers_from_line(input())
 solve_for_most_friends(number_of_test_cases)
