@@ -3,9 +3,8 @@ import collections
 class Graph():
 
     # Constructs the class with an arbitrary amount of vertices
-    def __init__(self, vertices_no, component_count) -> None:
+    def __init__(self, vertices_no) -> None:
         self.vertices_no = vertices_no
-        self.component_count = component_count
         # driver code
         self.graph = collections.OrderedDict()
     
@@ -39,7 +38,7 @@ class Graph():
             for edge in self.graph[vertex]:
                 print(vertex, " -> ", edge)
           
-def get_numbers_from_line(line):
+def get_dimensions(line):
     temp = line.split(" ")
     if len(temp) == 1:
         output = int(temp[0])
@@ -47,37 +46,22 @@ def get_numbers_from_line(line):
         output = [int(element) for element in temp]
     return output
 
-number_of_test_cases = get_numbers_from_line(input())
+number_of_test_cases = int(input())
 
 
 while number_of_test_cases > 0:
 
-    intial_data = get_numbers_from_line(input())
-    number_of_people = intial_data[0]
-    number_of_pairs = intial_data[1]
-    g = Graph(0, 0)
-
-    """ 
-    The following two while loops will structure the input data into nodes
-    and apply the edges for every node.
-    """
-    counter_num_people = 1
-    counter_num_pairs = 0
+    intial_data = get_dimensions(input())
+    x_size = intial_data[0]
+    y_size = intial_data[1]
+    g = Graph(0)
+    coordinate_system = []
+    counter_num_lines = 0
     
-    while counter_num_pairs != number_of_pairs:
-        line = get_numbers_from_line(input())
-        g.add_vertex(line[0])
-        g.add_vertex(line[1])
-        
-        if line[0] > line[1]:
-            person_one = line[1]
-            person_two = line[0]
-        else:
-            person_one = line[0]
-            person_two = line[1]
-        g.add_edge(person_one, person_two)
-        counter_num_pairs += 1
+    while counter_num_lines != y_size:
+        temp = [element for element in input()]
+        coordinate_system.append(temp)
+        counter_num_lines += 1
 
-    g.find_components()
     # decrements numbers of test cases
     number_of_test_cases -= 1
