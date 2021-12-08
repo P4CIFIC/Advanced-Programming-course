@@ -1,4 +1,3 @@
-"""
 class Graph:
 
     # Constructs the class with an arbitrary amount of vertices
@@ -55,7 +54,7 @@ g.add_edge(4, 1, 1)
 g.print_graph()
 # Reminder: the second element of each list inside the dictionary
 # denotes the edge weight.
-print ("Internal representation: ", g.graph)"""
+print ("Internal representation: ", g.graph)
 
 graph = {
   'A' : ['B','C'],
@@ -81,6 +80,8 @@ def bfs(visited, graph, node):
       if neighbour not in visited:
         visited.append(neighbour)
         queue.append(neighbour)
+        
+
 
 # Driver Code
 bfs(visited, graph, 'A')
