@@ -82,8 +82,6 @@ def get_numbers_from_line(line):
         output = [int(element) for element in temp]
     return output
 
-
-
 number_of_test_cases = get_numbers_from_line(input())
 
 while number_of_test_cases > 0:
@@ -93,17 +91,9 @@ while number_of_test_cases > 0:
     number_of_pairs = intial_data[1]
     g = Graph(0, 0)
 
-    """ 
-    The following two while loops will structure the input data into nodes
-    and apply the edges for every node.
-    """
     counter_num_people = 1
-    """
-        while counter_num_people != number_of_people + 1:
-            g.add_vertex(counter_num_people)
-            counter_num_people += 1
-    """
     counter_num_pairs = 0
+    
     while counter_num_pairs != number_of_pairs:
         line = get_numbers_from_line(input())
         g.add_vertex(line[0])
