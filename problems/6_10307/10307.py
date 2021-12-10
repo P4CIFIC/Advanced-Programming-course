@@ -63,29 +63,57 @@ class ShortestPath():
                 return (self.matrix[i].index(element), i) 
 
     def create_matrix(self):
-        self.set_dimensions()
         self.matrix = []
+        self.list_of_nodes = []
+        
+        self.set_dimensions()
+        
         counter_num_lines = 0
-            
         while counter_num_lines != self.height:
             temp = [element for element in input()]
             self.matrix.append(temp)
             counter_num_lines += 1
-        print(element for element in self.matrix)
+        
+        ##code for renaming the aliens (0 to n) pre-djikstras algorithm
+        renaming_counter = 0
+        for i in range(1, len(self.matrix)):
+            for j in range(len(self.matrix[i])):
+                if self.matrix[i][j] == self.goal:
+                    self.matrix[i][j] = str(self.goal + str(renaming_counter))
+                    self.list_of_nodes.append(str(self.goal + str(renaming_counter)))
+                    renaming_counter += 1
+        self.list_of_nodes.insert(0, self.start)
+        
+        print(self.matrix)
+        print(self.list_of_nodes)            
+                    
     
-    def bfs(self):
-        start = self.get_position(self.start)
+    def bfs(self, start, goal):
+        start = self.get_position(start)
         queue = collections.deque([[start]])
         seen = set([start])
         while queue:
             path = queue.popleft()
             x, y = path[-1]
-            if self.matrix[y][x] == self.goal:
+            if self.matrix[y][x] == goal:
                 return path
             for x2, y2 in ((x+1,y), (x-1,y), (x,y+1), (x,y-1)):
                 if 0 <= x2 < self.width and 0 <= y2 < self.height and self.matrix[y2][x2] != self.wall and (x2, y2) not in seen:
                     queue.append(path + [(x2, y2)])
                     seen.add((x2, y2))
+    
+    def create_graph(self):
+        self.weighted_graph = Graph(0)
+        
+        for element in self.list_of_nodes:
+            self.weighted_graph.add_vertex(element)        
+        
+        for i in self.list_of_nodes:
+            for j in self.list_of_nodes:
+                if i != j:
+                    self.weighted_graph.add_edge(i,j, len(self.bfs(i,j)) - 1)
+        
+        self.weighted_graph.print_graph() 
 
 
 number_of_test_cases = int(input())
@@ -93,6 +121,6 @@ number_of_test_cases = int(input())
 while number_of_test_cases > 0:
     sp = ShortestPath("S","A", "#", input())
     sp.create_matrix()
-    print(sp.bfs())
+    sp.create_graph()
     # decrements numbers of test cases
     number_of_test_cases -= 1
