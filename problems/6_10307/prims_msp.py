@@ -12,9 +12,9 @@ class Graph():
 
 	# A utility function to print the constructed MST stored in parent[]
 	def printMST(self, parent):
-		print "Edge \tWeight"
+		print ("Edge \tWeight")
 		for i in range(1, self.V):
-			print parent[i], "-", i, "\t", self.graph[i][ parent[i] ]
+			print (parent[i], "-", i, "\t", self.graph[i][ parent[i] ])
 
 	# A utility function to find the vertex with
 	# minimum distance value, from the set of vertices
@@ -75,8 +75,6 @@ g.graph = [ [0, 2, 0, 6, 0],
 			[2, 0, 3, 8, 5],
 			[0, 3, 0, 0, 7],
 			[6, 8, 0, 0, 9],
-			[0, 5, 7, 9, 0]]
+			[0, 5, 7, 9, 0] ]
 
-g.primMST();
-
-# Contributed by Divyanshu Mehta
+g.primMST()
