@@ -1,45 +1,5 @@
-import sys, collections
+import collections
 
-class PrimSolution():
-
-    def __init__(self, vertices):
-        self.V = vertices
-        self.graph = [[0 for column in range(vertices)]for row in range(vertices)]
-
-    def get_mst_sum(self, parent):
-        sum = 0
-        for i in range(1, self.V):
-            sum += self.graph[i][ parent[i] ]
-        return sum
-    
-    def minKey(self, key, mstSet):
-        min = sys.maxsize
-
-        for v in range(self.V):
-            if key[v] < min and mstSet[v] == False:
-                min = key[v]
-                min_index = v
-        return min_index
-
-    def primMST(self):
-
-        key = [sys.maxsize] * self.V
-        parent = [None] * self.V 
-        key[0] = 0
-        mstSet = [False] * self.V
-        parent[0] = -1 
-
-        for cout in range(self.V):
-            u = self.minKey(key, mstSet)
-            mstSet[u] = True
-            for v in range(self.V):
-
-                if self.graph[u][v] > 0 and mstSet[v] == False and key[v] > self.graph[u][v]:
-                    key[v] = self.graph[u][v]
-                    parent[v] = u
-        return self.get_mst_sum(parent)
-        
-  
 class Graph():
     
     def __init__(self, vertices_no) -> None:
@@ -70,31 +30,26 @@ class Graph():
 
 class ShortestPath():
     
-    def __init__(self, start, goal, wall, initial_data) -> None:
+    def __init__(self, start, goal, wall, dimensions) -> None:
+        self.start = start
         self.goal = goal
         self.wall = wall
-        self.initial_data = initial_data
-        self.start = start
+        self.dimensions = dimensions
     
     def set_dimensions(self):
-        temp = self.initial_data.split(" ")
+        temp = self.dimensions.split(" ")
         if len(temp) == 1:
             output = int(temp[0])
         else:
             output = [int(element) for element in temp]
         
         self.width = output[0]
-        self.height = output[1] 
-    
-    def get_position(self, element):
-        for i in range(len(self.matrix)):
-            if element in self.matrix[i]:
-                return (self.matrix[i].index(element), i) 
+        self.height = output[1]    
 
-    def create_matrix(self):
+    def create_map(self):
         self.matrix = []
         self.list_of_nodes = []
-        
+    
         self.set_dimensions()
 
         counter_num_lines = 0
@@ -103,7 +58,7 @@ class ShortestPath():
             self.matrix.append(temp)
             counter_num_lines += 1
         
-        ##code for renaming the aliens (0 to n) pre-djikstras algorithm
+        ##code for renaming the aliens (0 to n) pre-bfs algorithm
         renaming_counter = 0
         for i in range(1, len(self.matrix)):
             for j in range(len(self.matrix[i])):
@@ -112,10 +67,45 @@ class ShortestPath():
                     self.list_of_nodes.append(str(self.goal + str(renaming_counter)))
                     renaming_counter += 1
         self.list_of_nodes.insert(0, self.start)
-        
-        """print(self.matrix)
-        print(self.list_of_nodes)  """          
+
+    def get_position(self, element):
+        for i in range(len(self.matrix)):
+            if element in self.matrix[i]:
+                return (self.matrix[i].index(element), i) 
     
+    def find(self, i):
+        while parent[i] != i:
+            i = parent[i]
+        return i
+
+    def union(self, i, j):
+        a = self.find(i)
+        b = self.find(j)
+        parent[a] = b
+
+    def kruskalMST(self, cost):
+        mincost = 0
+
+        for i in range(V):
+            parent[i] = i
+
+        edge_count = 0
+        while edge_count < V - 1:
+            min = INF
+            a = -1
+            b = -1
+            for i in range(V):
+                for j in range(V):
+                    if self.find(i) != self.find(j) and cost[i][j] < min:
+                        min = cost[i][j]
+                        a = i
+                        b = j
+            self.union(a, b)
+            edge_count += 1
+            mincost += min
+            
+        print(mincost)
+
     def bfs(self, start, goal):
         start = self.get_position(start)
         queue = collections.deque([[start]])
@@ -129,46 +119,23 @@ class ShortestPath():
                 if 0 <= x2 < self.width and 0 <= y2 < self.height and self.matrix[y2][x2] != self.wall and (x2, y2) not in seen:
                     queue.append(path + [(x2, y2)])
                     seen.add((x2, y2))
-    
-    def create_adjacency_list(self):
-        self.weighted_graph = Graph(0)
-        
-        for element in self.list_of_nodes:
-            self.weighted_graph.add_vertex(element)
-        
+
+    def create_adjacency_matrix(self):
+        cost = [[INF for column in range(len(self.list_of_nodes))]for row in range(len(self.list_of_nodes))]
         for i in self.list_of_nodes:
             for j in self.list_of_nodes:
                 if i != j:
-                    # -1 at cost to compensate for bfs misscalculation
-                    self.weighted_graph.add_edge(i,j, len(self.bfs(i,j)) - 1)
-        
-        #self.weighted_graph.print_graph()
-    
-    def create_adjacency_matrix(self):
-        self.prims_algo = PrimSolution(len(self.list_of_nodes))
-        matrix = self.prims_algo.graph
-        weighted_graph = list(self.weighted_graph.graph.items())
-        
-        for node in weighted_graph:
-            for weight in node[1]:
-                matrix[self.list_of_nodes.index(weight[0])][self.list_of_nodes.index(node[0])] = weight[1]
-        
-        self.prims_algo.graph = matrix
-        sum = self.prims_algo.primMST()
-        return sum
-  
+                    cost[self.list_of_nodes.index(i)][self.list_of_nodes.index(j)] = len(self.bfs(i,j)) - 1
+        self.kruskalMST(cost)
 
 number_of_test_cases = int(input())
-sums = []
 
 while number_of_test_cases > 0:
     sp = ShortestPath("S","A", "#", input())
-    sp.create_matrix()
-    sp.create_adjacency_list()
-    sum = sp.create_adjacency_matrix()
-    sums.append(sum)
-    # decrements numbers of test cases
-    number_of_test_cases -= 1
+    INF = float('inf')
+    sp.create_map()
+    V = len(sp.list_of_nodes)
+    parent = [i for i in range(V)]
+    sp.create_adjacency_matrix()
 
-for sum in sums:
-    print(sum)
+    number_of_test_cases -= 1
