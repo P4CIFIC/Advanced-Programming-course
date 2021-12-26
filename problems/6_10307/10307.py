@@ -106,26 +106,30 @@ class ShortestPath():
             
         print(mincost)
 
-    def bfs(self, start, goal):
-        start = self.get_position(start)
-        queue = collections.deque([[start]])
-        seen = set([start])
+    def bfs(self, goal):
+        start_position = self.get_position(self.start)
+        queue = collections.deque([[start_position]])
+        paths = {}
+        seen = set([start_position])
         while queue:
             path = queue.popleft()
             x, y = path[-1]
             if self.matrix[y][x] == goal:
-                return path
+                paths[self.matrix[self.get_position(goal)[0]][self.get_position(goal)[1]]] = len(path) - 1
             for x2, y2 in ((x+1,y), (x-1,y), (x,y+1), (x,y-1)):
                 if 0 <= x2 < self.width and 0 <= y2 < self.height and self.matrix[y2][x2] != self.wall and (x2, y2) not in seen:
                     queue.append(path + [(x2, y2)])
                     seen.add((x2, y2))
+        for path in paths:
+            print(path)
+            
+        
+                    
 
     def create_adjacency_matrix(self):
         cost = [[INF for column in range(len(self.list_of_nodes))]for row in range(len(self.list_of_nodes))]
         for i in self.list_of_nodes:
-            for j in self.list_of_nodes:
-                if i != j:
-                    cost[self.list_of_nodes.index(i)][self.list_of_nodes.index(j)] = len(self.bfs(i,j)) - 1
+            self.bfs(i)
         self.kruskalMST(cost)
 
 number_of_test_cases = int(input())
