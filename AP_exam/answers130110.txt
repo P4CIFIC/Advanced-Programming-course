@@ -1,0 +1,68 @@
+1
+
+def peak(A[i..j]) {
+   if j-i < 6 {
+      for k <- i+1..j-1
+         if A[k-1] < A[k] and A[k] > A[k+1] return k
+      if A[i] > A[j] return i else return j
+   }
+   l  <- 2*i//3 +   j//3   # // denotes integer division
+   l' <-   i//3 + 2*j//3
+   if A[l] < A[l'] return peak(A[l..j])
+   return peak(A[i..l'])
+}
+
+Complexity is O(log n) since we remove 1/3 of the items in each recursion
+
+2
+
+a)
+
+def C(n,k) {
+   declare table[0..n,0..k]
+   for i <- 0..n table[i,0] <- 1
+   for j <- 1..k table[j,j] <- 1
+   for i <- 1..n 
+      for j <- 1..min{i-1,k}
+         table[i,j] <- table[i-1,j] + table[i-1,j-1]
+   return table[n,k]
+}
+
+b) O(n*k) because of the double for loop
+
+c) C(3,2) = 3
+
+3
+
+def isBipartite(G) {
+   for every node v in V(G) v.label <- none
+   declare Q  # an ordinary queue 
+   let v be any node in V(G)
+   Q.enQ(v)
+   type <- X
+   while not Q.isEmpty() {
+      for every neighbor u to v in G {
+         if u.label = none {
+            u.label <- type
+            Q.enQ(u)
+         }
+         if u.label != type return false
+      }
+      if type = X type <- Y else type <- X
+   }
+   return true
+}
+
+4
+
+a) Rule 2 is the correct one
+
+b) Counterexample for rule 1
+______________
+  _  _  _  _
+
+Counterexample for rule 3
+______ ______
+     ___
+
+
