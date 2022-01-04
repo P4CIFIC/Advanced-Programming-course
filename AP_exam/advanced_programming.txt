@@ -1,0 +1,8 @@
+Keywords from mock exams:
+
+Dynamic Programming 2x
+Huffman Coding
+Divide and conquer 2x
+Complexity 2x
+BFS 2x
+Closest Pair algorithm
