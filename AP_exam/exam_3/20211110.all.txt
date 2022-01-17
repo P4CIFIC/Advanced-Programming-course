@@ -1,0 +1,90 @@
+1)
+
+def sumsearch(S1, S2, x) {
+   Sort S1 
+   for each element s in S2 {
+      do binary search in S1 to see if x-s belongs  (takes O(log n) time)
+      if so return true
+   }
+   return false
+}
+
+Complexity is O(n log n) since sorting takes O(n log n) time, and the loop does O(log n) time binary search n times.
+
+DO NOT USE map! map uses hashing to achieve EXPECTED running time O(n) but has WORST CASE running time O(n²).
+
+
+2)
+Assume superman is at position s far to the left of all bunkers. The energy for bunker i is then pi-s+wi.
+If we move superman slightly to position s', the energy for bunker i is now pi-s'+wi.
+The difference in energy is then s'-s, INDEPENDENT of the bunker, so the bunker for which superman must use the most energy remains the same at position s and s'. So as superman flies towards the bunkers along the coastline, the amount of energy he uses decreases by the same amount for all bunkers. As he reaches bunker 1 and flies past it the energy decreases for all bunkers ahead of him but again start to increase for the bunkers behind him. The energy is smallest, either when the maximum energy required for the bunkers ahead of him is equal to the maximum energy required for the bunkers behind him, or at distance 0 to (on) some bunker. This gives us the following algorithm:
+
+def findsuperman(p, w) {
+// Arrays p[1..n] (positions) and w[1..n] (bunker weights) are input
+
+   maxLeft[1..n]; maxLeft[1] <- w[1]
+   maxRight[1..n]; maxRight[n] <- w[n]
+
+   for i <- 2..n {
+      maxLeft[i]      <- max{w[i],     maxLeft[i-1] + |p[i]-p[i-1]|}
+      maxRight[n-i+1] <- max{w[n-i+1], maxLeft[n-i+2] + |p[n-i+1]-p[n-i+2]|}
+   }
+
+   if maxLeft[1] > maxRight[1]: report  p[1]  and stop
+   if maxLeft[n] < maxRight[n]: report  p[n]  and stop
+
+   for i <- 1..n-1 { // Compute for interval p[i]..p[i+1] 
+      L <- maxLeft[i]; R <- maxRight[i+1]
+      // Find superman position such that  s - p[i] + L = p[i+1] - s + R  and  p[i] <= s <= p[i+1]
+      s <- (p[i] + p[i+1] + R - L)/2
+      if p[i] <= s <= p[i+1]: report  s  and break from loop
+   }
+}
+Two for-loops with constant work in each gives O(n) time.
+
+Solving the discretized version (assuming distances to be integral) reduces the mark! Also, just returning the energy value for a given s significantly simplifies the problem, gives 1 pt.
+
+
+3)
+a.
+
+def catalan(n) {
+    allocate array C[0...n]
+    C[0] <- 1
+    for i <- 1..n {
+        c <- 0
+        for j <- 0..i-1 {
+            c <- c + C[j]*C[i-j-1]
+        }
+        C[i] <- c
+    }
+    return C[n]
+}
+
+DO NOT COMPUTE RECURSIVELY!!!
+
+b.
+O(n^2) (double for-loop)
+
+c.
+C[0] = 1
+C[1] = C[0]*C[0] = 1*1 = 1
+C[2] = C[0]*C[1] + C[1]*C[0] = 1*1 + 1*1 = 2
+C[3] = C[0]*C[2] + C[1]*C[1] + C[2]*C[0] = 1*2 + 1*1 + 2*1 = 5
+C[4] = C[0]*C[3] + C[1]*C[2] + C[2]*C[1] + C[3]*C[0] = 1*5 + 1*2 + 2*1 + 5*1 = 14
+
+
+4)
+Let C be the set of comparisons. (note that the comparisons are given, you are not allowed to make them!)
+If they all have value 'same' this is consistent with the butterflies being of one type and we return false.
+Otherwise, we build a graph G=(V,E) with butterflies as nodes and edges between those that are 'different'.
+
+For the butterflies to be of two types, the graph G should be BIPARTITE, or equivalently TWO-COLORABLE, or equivalently contain no cycle of odd length. We can test this using a modified BFS algorithm, where we (for example) add an extra boolean attribute v.white which is assigned to true when v.visited is marked, if the node u followed to v had u.white = false and vice versa. If we encounter two neighbors having the same white assignment (both true or both false) the algorithm can stop and report that the butterflies are NOT of two types.
+If the modified DFS runs through without rejecting, the algorithm can report that the butterflies are of two types.
+
+Testing all pairs is not allowed, odd cycle test of length <4 reduces mark and quadratic time algorithm reduces mark.
+
+5)
+The graph in the picture should use GST to emulate a solution to set cover. In set cover we want to know if there is some group of k sets S[i1],...,S[ik] that cover (in the picture they connect to) ALL objects u[1]...u[n] together. Hence, the weights of the edges between any S[i] and u[j] is unimportant and can be set to 0. Since we count the number of S[i]'s (should be k of them) we can do this by assigning each edge from v to S[i] to 1. If a subtree of weight k exists, then a set cover solution of size k exists so t<-k.
+
+

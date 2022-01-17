@@ -1,8 +1,34 @@
-Keywords from mock exams:
+WHAT TO STUDY:
+X | Dynamic Programming 2x
+X | Huffman Coding
+  | Divide and conquer 2x
+  | Complexity 2x
+  | BFS 2x
+  | Closest Pair algorithm
+  | Binary Search (needs sorted list -> mergesort|quicksort)
 
-Dynamic Programming 2x
-Huffman Coding
-Divide and conquer 2x
-Complexity 2x
-BFS 2x
-Closest Pair algorithm
+
+Recursion:
+	- Top -> down approach leading often to the smallest element of input
+	- Divide and conquer is an example
+
+Dynamic Programming:
+	- Bottom -> up approach or Top -> down approach depending on method (tabulation vs memoization)
+	- Memoization: (Top -> down)solving top "problems" first often decreasing the complexity by minimizing the total of subsets needed to be run.
+	- Tabulation: (Bottom -> up) is an approach where you solve a dynamic programming problem by first filling up a table, 
+		and then compute the solution to the original problem based on the results in this table.
+	
+	OTHER DESCRIPTION:
+	- Memoization (Top Down) - Using recursion to solve the sub-problem and storing the result in some hash table.
+	- Tabulation (Bottom Up) - Using Iterative approach to solve the problem by solving the smaller sub-problems first 
+					and then using it during the execution of bigger problem.
+Divide & conquer:
+	- Recursively breaks down a problem into two or more sub-problems of the same or related type, until these become simple enough to be solved directly. 
+		The solutions to the sub-problems are then combined to give a solution to the original problem.
+	- Example: Merge sort and quick sort.
+
+Binary Search: dividing array to middle and going left or right if current element is larger or smaller than input
+		(needs sorted list -> mergesort|quicksort)
+		
+		Complexity: O(log n)
+		Best case: O(1) if middle is equal to searched

@@ -1,0 +1,152 @@
+Solutions Exam 2021-12-13
+
+1)
+ 
+If 'ci hates cj', then ci is not allowed to be placed before cj. If we then make a directed edge (arc) from cj to ci (note the reversed order) a solution to the problem corresponds to an ordering with all the edges between children pointing 'forward', i.e., the order is in 'topologocally sorted' (linearized in the book, page 90) on the directed graph.
+
+Algorithm
+
+def Order(C[1..n], R[1..m]) {
+   G <- directed graph of n nodes C[1]..C[n] and no edges
+   for each report in R
+      if report = 'ci hates cj', insert arc from C[j] to C[i] in G
+   topologically sort G
+   if order in G exists, return children in this order
+   otherwise, reject
+}
+
+Complexity is O(n+m) for the topological sort using DFS
+
+You need to state the direction of the arcs in the graph, otherwise four points are removed.
+
+
+2)
+
+def minimumPairwisePartition(S[1..2n]) {
+   X <- sort(S)
+   R <- [1..n]
+   for i <- 1..n, R[i] <- (X[i], X[2n+1-i])
+   return R
+}
+
+Match pairwise first and last elements, second and penultimate element, and so on of the sequence in sorted order.
+AGAIN, NOTE THAT THE NUMBER OF VALUES IS 2n, NOT n!!! Remove one point!
+
+
+3)
+a.
+
+Recurrence:
+
+R(X, Y, Z) = true, if |X| = |Y| = |Z| = 0              # base case is true, empty string is a shuffle of two empty strings!
+R(X[1..n], Y[1..m], Z[1..n+m]) = R(X[1..n-1], Y[1..m],   Z[1..n+m-1]), if X[n] = Z[n+m], or     # THIS CANNOT BE AN ELSE!!!
+R(X[1..n], Y[1..m], Z[1..n+m]) = R(X[1..n],   Y[1..m-1], Z[1..n+m-1]), if Y[m] = Z[n+m], or
+R(X[1..n], Y[1..m], Z[1..n+m]) = false, otherwise
+
+another possibility is:
+
+R(X, Y) = true, if |X| = |Y| = 0              # base case is true, empty string is a shuffle of two empty strings!
+R(X[1..n], Y[1..m]) = R(X[1..n-1], Y[1..m]  ), if X[n] = Z[n+m], or     # THIS CANNOT BE AN ELSE!!!
+R(X[1..n], Y[1..m]) = R(X[1..n],   Y[1..m-1]), if Y[m] = Z[n+m], or
+R(X[1..n], Y[1..m]) = false, otherwise
+
+b.
+
+A few general solutions are possible:
+
+def verifyShuffleSimple(X, Y, Z) {
+   if |X| + |Y| != |Z|, reject
+   R <- [0..|X|, 0..|Y|, 0..|Z|] (fill all positions with false)
+   R[0, 0, 0] <- true
+   for i <- 1..|X|, R[i,0,i] <- R[i-1,0,i-1] and X[i] = Z[i]
+   for j <- 1..|Y|, R[0,j,j] <- R[0,j-1,j-1] and Y[j] = Z[j]
+   for i <- 1..|X|
+      for j <- 1..|Y|
+         R[i, j, i+j] <- (R[i-1, j, i+j-1] and X[i] = Z[i+j]) or (R[i, j-1, i+j-1] and Y[j] = Z[i+j])
+   return R[|X|, |Y|, |Z|]
+}
+
+A faster solution just produces a two-dimensional table on X and Z 
+
+def verifyShuffleFast1(X, Y, Z) {
+   if |X| + |Y| != |Z|, reject
+   if |X| > |Y| swap X and Y
+   R <- [0..|X|, 0..|Z|] (fill all positions with false)
+   R[0, 0] <- true
+   for i <- 1..|X|, R[i,i] <- R[i-1,i-1] and X[i] = Z[i]
+   for j <- 1..|Y|, R[0,j] <- R[0,j-1] and Y[j] = Z[j]
+   for i <- 1..|X|
+      for j <- i..i+|Y|
+         R[i, j] <- (R[i-1, j-1] and X[i] = Z[j]) or (R[i, j-1] and Y[j-i] = Z[j])  # Y[0] is the empty string
+   return R[|X|, |Z|]
+}
+
+Another fast solution uses a two-dimensional table on X and Y
+
+def verifyShuffleFast2(X, Y, Z) {
+   if |X| + |Y| != |Z|, reject
+   R <- [0..|X|, 0..|Y|] (fill all positions with false)
+   R[0,0] <- true
+   for i <- 1..|X|, R[i,0] <- R[i-1,0] and X[i] = Z[i]
+   for j <- 1..|Y|, R[0,j] <- R[0,j-1] and Y[j] = Z[j]
+   for i <- 1..|X|
+      for j <- 1..|Y|
+         R[i, j] <- (R[i-1, j] and X[i] = Z[i+j]) or (R[i, j-1] and Y[j] = Z[i+j])  
+   return R[|X|, |Y|]
+}
+
+Erroneous solution: keeping two indices ix and iy, increasing ix when the X-letter matches the Z-letter and iy when the Y-letter matches the Z-letter fails on strings like:
+X = ab
+Y = ac
+Z = abac (or acab if the Y-letter is tested first) 
+-> 0 points
+
+c.
+
+Construction and fill of table R in first solution takes O(nm(n+m)) = O(n²m+nm²) time, for loop only O(nm) time.
+Construction and fill of table R in second solution takes O(n(n+m)) = O(nm) time since n<=m and for loop O(nm) time so O(nm) is correct for second solution.
+Construction and fill of table R in third solution takes O(nm) time and for loop O(nm) time so O(nm) is correct for third solution.
+
+Erroneous solution has complexity O(n+m), no points for this.
+
+
+4)
+
+If a customer lists movies Mi and Mj then these cannot be shown on the same day. Constructing a graph of all movies (k nodes) and an edge between two movies if a customer requests these (n edges) we want to know if the movies/nodes can be partitioned into two sets (Saturday movies and Sunday movies), i.e., if the graph is BIPARTITE, or equivalently TWO-COLORABLE, or equivalently contain no cycle of odd length.
+
+We can test this using a modified BFS algorithm, where we (for example) add an extra boolean attribute v.white which is assigned to true when v.visited is marked, if the node u followed to v had u.white = false and vice versa. If we encounter two visited neighbors having the same white assignment (both true or both false) the algorithm can stop and report that the movies cannot be shown uniquely on two days.
+
+If the modified BFS runs through without rejecting, the movies corresponding to nodes v with v.white = true can be shown uniquely on Saturdays and those with v.white = false can be shown uniquely on Sundays.
+
+Two-coloring can be done in O(n+k) on a graph with k nodes and n edges using this modified BFS algorithm. Coloring in general is NP-hard even for three colors, so just mentioning a "coloring algorithm" is wrong answer.
+
+
+5)
+
+Standard plane sweep maintains a queue (priority queue not necessary for this problem) of events and a balanced binary search tree of vertical intervals corresponding to the interior of rectangles, as there can be several of them on any y-coordinate.
+
+Sort points of S1 by inreasing x-coordinate, sort rectangles of S2 on increasing x-coordinate of leftmost vertical side -> L, and sort rectangles of S2 on increasing x-coordinate of rightmost vertical side -> R
+
+for each coordinate in S1, L, and R insert item (togetether with bookkeeping information on if it comes from S1, L or R) in queue Q so that they are in increasing order of x-coordinate.
+
+def planeSweep(Q) {
+   T <- empty balanced binary search tree (ordered on y-coordinates)
+   P <- {} # empty point set
+   while not Q.isEmpty() {
+      q <- Q.deQ()
+      if q is a point from S1 {
+         search for y-coordinate of q in T to see if it lies in an interval in T
+         if so, P.append(q)
+      } else if q is a left side of a rectangle (from L),
+         insert interval [q.maxy,q.miny] in tree T
+      else if q is a right side of a rectangle (from R),
+         remove interval [q.maxy,q.miny] from tree T
+   }
+   return P
+}
+
+Sorting S1 requires O(n1 log n1) <= O(n log n) time, sorting S2 twice requires O(n2 log n2) <= O(n log n) time if n = n1+n2
+
+Queue Q contains n1 + 2*n2 <= 2n items and T contains at most n2<=n intervals at any time, so we do n1 + 2*n2 tree operations, each costing O(log n2) time each. Hence a total of at most O(n log n) time.
+
+General description of plane sweep gives 1 point. For full marks you need to specify the datastructures, queue Q and tree T.
