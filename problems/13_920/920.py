@@ -1,6 +1,5 @@
 import math
 
-from cv2 import sqrt
 class Point():
     
     def __init__(self, x, y) -> None:
@@ -20,7 +19,7 @@ def get_x (point, k, m):
     return (point.y-m) / k
 
 def get_distance(point_a, point_b):
-    return sqrt( ((point_a.x - point_b.x)**2 + (point_a.y - point_b.y)**2) )
+    return math.sqrt( ((point_a.x - point_b.x)**2 + (point_a.y - point_b.y)**2) )
 
 #function that creates the pairs of points that intersect 
 def find_intersections(coordinates, n):
