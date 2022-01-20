@@ -127,12 +127,15 @@ def closest(P, n):
 
 
 lines = []
-while True:  # storing the input in a list
+"""while True:  # storing the input in a list
     line = input()
     if line == "0":
         break
     else:
         lines.append(line)
+"""
+lines = [line.rstrip('\n') for line in open(r'C:\kurser\Advanced-Programming-Assignments\problems\15_10245\super_testcases.txt')]
+lines.pop()
 
 while True:
     points = []
