@@ -1,19 +1,13 @@
 import math
 import copy
 
-
 class Point():
     def __init__(self, x, y):
         self.x = x
         self.y = y
 
-    def __repr__(self):
-        print(f"x: {self.x}, y: {self.y}")
-
 # A utility function to find the
 # distance between two points
-
-
 def dist(p1, p2):
     return math.sqrt((p1.x - p2.x) *
                      (p1.x - p2.x) +
@@ -23,15 +17,12 @@ def dist(p1, p2):
 # A Brute Force method to return the
 # smallest distance between two points
 # in P[] of size n
-
-
 def bruteForce(P, n):
     min_val = float('inf')
     for i in range(n):
         for j in range(i + 1, n):
             if dist(P[i], P[j]) < min_val:
                 min_val = dist(P[i], P[j])
-
     return min_val
 
 # A utility function to find the
@@ -43,8 +34,6 @@ def bruteForce(P, n):
 # Note that this method seems to be
 # a O(n^2) method, but it's a O(n)
 # method as the inner loop runs at most 6 times
-
-
 def stripClosest(strip, size, d):
 
     # Initialize the minimum distance as d
@@ -57,7 +46,7 @@ def stripClosest(strip, size, d):
     # runs at most 6 times
     for i in range(size):
         j = i + 1
-        while j < size and (strip[j].y - 
+        while j < size and (strip[j].y -
                             strip[i].y) < min_val:
             min_val = dist(strip[i], strip[j])
             j += 1
@@ -104,7 +93,7 @@ def closestUtil(P, Q, n):
         if abs(Q[i].x - midPoint.x) < d:
             stripQ.append(Q[i])
 
-    stripP.sort(key=lambda point: point.y)  # <-- REQUIRED
+    stripP.sort(key=lambda point: point.y)
     min_a = min(d, stripClosest(stripP, len(stripP), d))
     min_b = min(d, stripClosest(stripQ, len(stripQ), d))
 
@@ -134,7 +123,8 @@ lines = []
     else:
         lines.append(line)
 """
-lines = [line.rstrip('\n') for line in open(r'C:\kurser\Advanced-Programming-Assignments\problems\15_10245\super_testcases.txt')]
+lines = [line.rstrip('\n') for line in open(
+        r'C:\Users\malek\Desktop\Advanced-Programming-Assignments\problems\15_10245\super_testcases.txt')]
 lines.pop()
 
 while True:
@@ -145,7 +135,8 @@ while True:
         x, y = int(temp[0]), int(temp[1])
         point = Point(x, y)
         points.append(point)
-    # finding closest pair for each test case
+
+    # Finding closest pair for each test case
     res = closest(points, number_of_points)
     if res == "inf" or res > 10000:
         print("INFINITY")
