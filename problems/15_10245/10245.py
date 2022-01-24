@@ -1,22 +1,16 @@
-import math
-import copy
+import math, copy
 
 class Point():
     def __init__(self, x, y):
         self.x = x
         self.y = y
 
-# A utility function to find the
-# distance between two points
 def dist(p1, p2):
     return math.sqrt((p1.x - p2.x) *
                      (p1.x - p2.x) +
                      (p1.y - p2.y) *
                      (p1.y - p2.y))
 
-# A Brute Force method to return the
-# smallest distance between two points
-# in P[] of size n
 def bruteForce(P, n):
     min_val = float('inf')
     for i in range(n):
@@ -25,25 +19,10 @@ def bruteForce(P, n):
                 min_val = dist(P[i], P[j])
     return min_val
 
-# A utility function to find the
-# distance between the closest points of
-# strip of given size. All points in
-# strip[] are sorted according to
-# y coordinate. They all have an upper
-# bound on minimum distance as d.
-# Note that this method seems to be
-# a O(n^2) method, but it's a O(n)
-# method as the inner loop runs at most 6 times
 def stripClosest(strip, size, d):
 
-    # Initialize the minimum distance as d
     min_val = d
 
-    # Pick all points one by one and
-    # try the next points till the difference
-    # between y coordinates is smaller than d.
-    # This is a proven fact that this loop
-    # runs at most 6 times
     for i in range(size):
         j = i + 1
         while j < size and (strip[j].y -
@@ -53,37 +32,22 @@ def stripClosest(strip, size, d):
 
     return min_val
 
-# A recursive function to find the
-# smallest distance. The array P contains
-# all points sorted according to x coordinate
 def closestUtil(P, Q, n):
 
-    # If there are 2 or 3 points,
-    # then use brute force
     if n <= 3:
         return bruteForce(P, n)
 
-    # Find the middle point
     mid = n // 2
     midPoint = P[mid]
 
-    # keep a copy of left and right branch
     Pl = P[:mid]
     Pr = P[mid:]
 
-    # Consider the vertical line passing
-    # through the middle point calculate
-    # the smallest distance dl on left
-    # of middle point and dr on right side
     dl = closestUtil(Pl, Q, mid)
     dr = closestUtil(Pr, Q, n - mid)
 
-    # Find the smaller of two distances
     d = min(dl, dr)
 
-    # Build an array strip[] that contains
-    # points close (closer than d)
-    # to the line passing through the middle point
     stripP = []
     stripQ = []
     lr = Pl + Pr
@@ -97,23 +61,14 @@ def closestUtil(P, Q, n):
     min_a = min(d, stripClosest(stripP, len(stripP), d))
     min_b = min(d, stripClosest(stripQ, len(stripQ), d))
 
-    # Find the self.closest points in strip.
-    # Return the minimum of d and self.closest
-    # distance is strip[]
     return min(min_a, min_b)
 
-# The main function that finds
-# the smallest distance.
-# This method mainly uses closestUtil()
 def closest(P, n):
     P.sort(key=lambda point: point.x)
     Q = copy.deepcopy(P)
     Q.sort(key=lambda point: point.y)
 
-    # Use recursive function closestUtil()
-    # to find the smallest distance
     return closestUtil(P, Q, n)
-
 
 lines = []
 """while True:  # storing the input in a list
@@ -124,13 +79,15 @@ lines = []
         lines.append(line)
 """
 lines = [line.rstrip('\n') for line in open(
-        r'C:\Users\malek\Desktop\Advanced-Programming-Assignments\problems\15_10245\super_testcases.txt')]
+        #r'C:\Users\malek\Desktop\Advanced-Programming-Assignments\problems\15_10245\super_testcases.txt')]
+        r'C:\kurser\Advanced-Programming-Assignments\problems\15_10245\super_testcases.txt')]
+
 lines.pop()
 
 while True:
     points = []
     number_of_points = int(lines.pop(0))
-    for i in range(number_of_points):  # creating point objects for all points in test case
+    for i in range(number_of_points):  # Creating point objects for all points in test case
         temp = lines.pop(0).split()
         x, y = int(temp[0]), int(temp[1])
         point = Point(x, y)
