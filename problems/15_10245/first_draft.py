@@ -6,10 +6,8 @@ class Point():
         self.y = y
 
 def dist(p1, p2):
-    return math.sqrt((p1.x - p2.x) *
-                     (p1.x - p2.x) +
-                     (p1.y - p2.y) *
-                     (p1.y - p2.y))
+    return math.sqrt((p1.x - p2.x) * (p1.x - p2.x) +
+                     (p1.y - p2.y) * (p1.y - p2.y))
 
 def bruteForce(P, n):
     min_val = float('inf')
