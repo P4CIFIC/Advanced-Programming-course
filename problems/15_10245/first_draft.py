@@ -23,8 +23,7 @@ def stripClosest(strip, size, d):
 
     for i in range(size):
         j = i + 1
-        while j < size and (strip[j].y -
-                            strip[i].y) < min_val:
+        while j < size and (strip[j].y - strip[i].y) < min_val:
             min_val = dist(strip[i], strip[j])
             j += 1
 
