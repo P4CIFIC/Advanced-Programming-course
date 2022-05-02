@@ -1,16 +1,19 @@
-import math
+import sys, math
 
 class ClosestPair():
-    def __init__(self, x_sorted_points, y_sorted_points, number_of_points) -> None:
-        self.smallest_distance = "INFINITY"
-        self.divide_and_conquer(x_sorted_points, y_sorted_points, number_of_points)
+    def __init__(self, points, number_of_points) -> None:
+        self.number_of_points = number_of_points
+        #sort by x-coordinate (increasing)
+        self.x_sorted_points = sorted(points, key=lambda p: p[0])
+        #sort by y-coordinate (increasing)
+        self.y_sorted_points = sorted(points, key=lambda p: p[1])
     
     def dist(self, point1, point2):
         return math.sqrt((point1[0] - point2[0]) * (point1[0] - point2[0]) +
                          (point1[1] - point2[1]) * (point1[1] - point2[1]))
     
     def closest_brute_force(self, points):
-        min = math.inf
+        min = float("inf")
         number_of_points = len(points)
         for i in range(number_of_points):
             for j in range(i + 1, number_of_points):
@@ -58,21 +61,16 @@ class ClosestPair():
         min_b = min(min_both_sides, 
                     self.closest_in_section(y_section, len(y_section), min_both_sides))
 
-        self.smallest_distance = min(min_a, min_b)
+        return min(min_a, min_b)
     
     def get_smallest_distance(self):
-        if isinstance(self.smallest_distance, str):
-            return self.smallest_distance
-        elif isinstance(self.smallest_distance, int) or isinstance(self.smallest_distance, float):
-            if self.smallest_distance < 10000:
-                return("{0:.4f}".format(self.smallest_distance))
-            else:
-                return "INFINITY"
+        res = self.divide_and_conquer(self.x_sorted_points, self.y_sorted_points, self.number_of_points)
+        if res < 10000:
+            return("{0:.4f}".format(res))
+        else:
+            return "INFINITY"
 
-
-lines = [line.rstrip('\n') for line in open(
-        r'C:\Users\malek\Desktop\Advanced-Programming-Assignments\problems\15_10245\super_testcases.txt')]
-        #r'C:\kurser\Advanced-Programming-Assignments\problems\15_10245\super_testcases.txt')]
+lines = [line.rstrip('\n') for line in sys.stdin]
 lines.pop()
 
 while True:
@@ -82,11 +80,7 @@ while True:
         temp = lines.pop(0).split()
         point = (int(temp[0]), int(temp[1]))
         points.append(point)
-    #sort by x-coordinate (increasing)
-    x_sorted_points = sorted(points, key=lambda p: p[0])
-    #sort by y-coordinate (increasing)
-    y_sorted_points = sorted(points, key=lambda p: p[1])
-    cp = ClosestPair(x_sorted_points, y_sorted_points, number_of_points)
+    cp = ClosestPair(points, number_of_points)
     print(cp.get_smallest_distance())
     if len(lines) != 0:
         continue
