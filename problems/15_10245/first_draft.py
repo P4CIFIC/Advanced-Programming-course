@@ -76,8 +76,8 @@ lines = []
         lines.append(line)
 """
 lines = [line.rstrip('\n') for line in open(
-        #r'C:\Users\malek\Desktop\Advanced-Programming-Assignments\problems\15_10245\super_testcases.txt')]
-        r'C:\kurser\Advanced-Programming-Assignments\problems\15_10245\super_testcases.txt')]
+        r'C:\Users\malek\Desktop\Advanced-Programming-Assignments\problems\15_10245\super_testcases.txt')]
+        #r'C:\kurser\Advanced-Programming-Assignments\problems\15_10245\super_testcases.txt')]
 
 lines.pop()
 
