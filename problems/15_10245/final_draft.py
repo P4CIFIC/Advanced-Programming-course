@@ -70,8 +70,11 @@ class ClosestPair():
         else:
             return "INFINITY"
 
-lines = [line.rstrip('\n') for line in sys.stdin]
-lines.pop()
+lines = []
+for line in sys.stdin:
+    if '0' == line.rstrip():
+        break
+    lines.append(line.rstrip())
 
 while True:
     points = []
